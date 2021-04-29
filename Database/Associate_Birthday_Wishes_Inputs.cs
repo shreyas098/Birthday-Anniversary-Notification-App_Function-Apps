@@ -16,7 +16,7 @@ namespace EmailSendingFunctionApp.Database
         public int Id { get; set; }
         public int AssociateId { get; set; }
         public int BirthdayPersonId { get; set; }
-        public DateTimeOffset AddedDate { get; set; }        
+        public DateTimeOffset AddedDate { get; set; }
         public string BirthdayMessage { get; set; }
     }
 }
