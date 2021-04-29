@@ -8,7 +8,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
 {
     class EventReminderEmailToAssociateTrigger
     {
-        const string Timer = "0 */5 * * * *";
+        const string Timer = "0 0 0 * * *";
         private readonly IEventReminderEmailToAssociateFunction TheFunction;
         public EventReminderEmailToAssociateTrigger(IEventReminderEmailToAssociateFunction theFunction)
         {

@@ -32,8 +32,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
                 {
                     msg += $"<span>{m.Message}</span><br/> <span>-{m.SenderName}</span><br/><br/>";
                 });
-
-                //Send Email Notification
+                
                 await NotificationServices.SendEmail(new Models.BirthdayNotificationModel
                 {
                     To = bd.AssociateEmail,                                      
