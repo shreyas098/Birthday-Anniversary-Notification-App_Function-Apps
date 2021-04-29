@@ -25,6 +25,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
         {
             var bdList = AssociateQueryServices.GetUpcomingAssociateBirthdays();
             var associates = AssociateQueryServices.GetAssociateEmailList();
+            var subject = AssociateQueryServices.GetValue("BirthdayReminder_Subject");
             foreach (var item in bdList)
             {
                 foreach (var asc in associates)
@@ -34,7 +35,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
                         await NotificationServices.SendEmail(new Models.BirthdayReminderNotificationModel
                         {
                             To = asc.AssociateEmail,                            
-                            Subject = AssociateQueryServices.GetValue("BirthdayReminder_Subject"),
+                            Subject = $"{subject} ({DateTime.UtcNow.Date.ToShortDateString()})",
                             Template = AssociateQueryServices.GetValue("BirthdayReminderTemplate")
                         });
                     }
