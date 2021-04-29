@@ -26,7 +26,8 @@ namespace EmailSendingFunctionApp.Services
                 new AssociateDetailModel {
                     AssociateName = x.FirstName,
                     AssociateId = x.Id,
-                   AssociateEmail= x.UserName }).ToList();
+                   AssociateEmail= x.Email 
+                }).ToList();
                 return list;
             }
            
@@ -43,7 +44,7 @@ namespace EmailSendingFunctionApp.Services
                     {
                         AssociateId = x.Id,
                         AssociateName = x.FirstName,
-                        AssociateEmail = x.UserName
+                        AssociateEmail = x.Email
                     }).ToList();
                 return associates;
             }           
@@ -59,7 +60,7 @@ namespace EmailSendingFunctionApp.Services
                     {
                         AssociateId = x.Id,
                         AssociateName = x.FirstName,
-                        AssociateEmail = x.UserName
+                        AssociateEmail = x.Email
                     }).ToList();
                 return associates;
             }

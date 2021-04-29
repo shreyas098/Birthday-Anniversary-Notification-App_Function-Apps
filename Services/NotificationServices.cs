@@ -36,7 +36,8 @@ namespace EmailSendingFunctionApp.Services
 
         public async Task SendEmail(BirthdayReminderNotificationModel request)
         {
-            var content = TemplateStoreServices.GetTemplate(request.Template);           
+            var content = TemplateStoreServices.GetTemplate(request.Template);
+            content = content.Replace("[Associates]", request.Associates);
             await EmailService.SendAsync(new EmailRequest
             {
                 To = request.To,

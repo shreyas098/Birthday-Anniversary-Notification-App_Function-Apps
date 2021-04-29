@@ -21,7 +21,7 @@ namespace EmailSendingFunctionApp.Models
 
     public class BirthdayReminderNotificationModel : EmailRequest
     {
-        public string Message { get; set; }        
+        public string Associates { get; set; }        
         public string Template { get; set; }
     }
 }
