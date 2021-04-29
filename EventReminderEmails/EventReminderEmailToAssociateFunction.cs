@@ -33,8 +33,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
                     {
                         await NotificationServices.SendEmail(new Models.BirthdayReminderNotificationModel
                         {
-                            To = asc.AssociateEmail,
-                            From = "anjali.sharma@kiprosh.com",
+                            To = asc.AssociateEmail,                            
                             Subject = AssociateQueryServices.GetValue("BirthdayReminder_Subject"),
                             Template = AssociateQueryServices.GetValue("BirthdayReminderTemplate")
                         });

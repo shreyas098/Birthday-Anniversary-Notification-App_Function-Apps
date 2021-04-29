@@ -24,7 +24,7 @@ namespace EmailSendingFunctionApp
                 builder.Services.AddSingleton<ISendBirthdayWishesFunction, SendBirthdayWishesFunction>();
 
                 //Register Services
-                builder.Services.AddSingleton<IEmailService, EmailService>();
+                builder.Services.AddSingleton<IEmailService>(new EmailService(Environment.GetEnvironmentVariable("EmailApiKey")));
 
                 var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
                 optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("DbConnectionString"));

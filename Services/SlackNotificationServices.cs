@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using static EmailSendingFunctionApp.Models.CommonModel;
 
 namespace EmailSendingFunctionApp.Services
 {
@@ -40,14 +42,15 @@ namespace EmailSendingFunctionApp.Services
             }
         }
 
-        public async Task<string> GetUserByEmail(string email)
+        public async Task<SlackUserModel> GetUserByEmail(string email)
         {
             using (var message = new HttpRequestMessage(HttpMethod.Get, $"https://slack.com/api/users.lookupByEmail?email={email}"))
             {
                 apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 apiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SlackToken);                
-                await apiClient.SendAsync(message);
-                return "xyz";
+                var response =await apiClient.SendAsync(message);
+                var data = JsonSerializer.Deserialize<UserLookUpResponseMessage>(response.Content.ReadAsStringAsync().Result);
+                return data.user;
             }
         }
     }

@@ -8,7 +8,7 @@ namespace EmailSendingFunctionApp.EventReminderEmails
 {
     class SendBirthdayWishesTrigger
     {
-        const string Timer = "0 */5 * * * *";
+        const string Timer = "0 0 2 * * *";
         private readonly ISendBirthdayWishesFunction TheFunction;
         public SendBirthdayWishesTrigger(ISendBirthdayWishesFunction theFunction)
         {

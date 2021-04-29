@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace EmailSendingFunctionApp.Services
 {
     public class NotificationServices : INotificationServices
-    {
-        
+    {        
         private readonly ISlackNotificationServices SlackNotificationServices;
         private readonly IEmailService EmailService;
         private readonly ITemplateStoreService TemplateStoreServices;
@@ -25,13 +24,13 @@ namespace EmailSendingFunctionApp.Services
         public async Task SendEmail(BirthdayNotificationModel request)
         {
             var content = TemplateStoreServices.GetTemplate(request.Template);
-            content=content.Replace("Data", request.Message);
-            content = content.Replace("AssociateName", request.AssociateName);
+            content=content.Replace("[Messages]", request.Message);
+            content = content.Replace("[AssociateName]", request.AssociateName);
             await EmailService.SendAsync(new EmailRequest { 
                 To = request.To,
                 Body = content,
-                From = request.From,
-                Subject = request.Subject,                
+                From = "anjali.sharma@kiprosh.com",
+                Subject = request.Subject               
             });
         }
 
@@ -42,7 +41,7 @@ namespace EmailSendingFunctionApp.Services
             {
                 To = request.To,
                 Body = content,
-                From = request.From,
+                From = "anjali.sharma@kiprosh.com",
                 Subject = request.Subject,
             });
         }
@@ -55,8 +54,24 @@ namespace EmailSendingFunctionApp.Services
 
         public async Task NotifyUser(string email, List<MessageModel> msgList)
         {
-            var slackUserId = await SlackNotificationServices.GetUserByEmail(email);
-            //await SlackNotificationServices.NotifyUser();
+            var slackUser = await SlackNotificationServices.GetUserByEmail(email);
+            await SlackNotificationServices.NotifyUser(CreatePayload(msgList, slackUser.id));
+        }
+
+        private string CreatePayload(List<MessageModel> msgList, string id) {
+            var payload = "{\"channel\":\"" + id + "\",\"blocks\": [{\"type\": \"section\",\"text\": {\"type\": \"mrkdwn\",\"text\": \"Hey <@UBFUGRUDA> :wave: Here are the birthday wishes for you :tada:\"}},{\"type\": \"image\",\"title\": {\"type\": \"plain_text\",\"text\": \"image1\",\"emoji\": true},\"image_url\": \"https://thumbs.dreamstime.com/b/colorful-happy-birthday-cupcakes-candles-spelling-148323072.jpg\",\"alt_text\": \"image1\"},{\"type\": \"divider\"},{\"type\": \"section\",\"fields\": [";
+            var fields ="";
+            msgList.ForEach(x =>
+            {
+                var f = "{\"type\": \"mrkdwn\",\"text\":\"*" + x.Message + "*\\n -_" + x.SenderName +"_\"}";
+                if (!string.IsNullOrWhiteSpace(fields))
+                {
+                    fields += ",";
+                }
+                fields += f;
+            });
+            payload += fields +"]}]}";           
+            return payload;
         }
        
     }

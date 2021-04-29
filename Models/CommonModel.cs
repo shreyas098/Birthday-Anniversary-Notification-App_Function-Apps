@@ -5,10 +5,19 @@ using System.Text;
 namespace EmailSendingFunctionApp.Models
 {
     public class CommonModel
-    {
-        public enum Event_Type_Enum { 
-            Birthday=1,
-            WorkAnniversary=2
+    {       
+        public class UserLookUpResponseMessage
+        {
+            public bool ok { get; set; }
+            public SlackUserModel user { get; set; }            
         }
+
+        public class SlackUserModel { 
+            public string id { get; set; }
+            public string team_id { get; set; }
+            public string name { get; set; }
+            public string real_name { get; set; }
+        }        
     }
+
 }

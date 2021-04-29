@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static EmailSendingFunctionApp.Models.CommonModel;
 
 namespace EmailSendingFunctionApp.Services.Abstract
 {
@@ -9,6 +10,6 @@ namespace EmailSendingFunctionApp.Services.Abstract
     {
         Task PostMessageToChannel(string msg);
         Task NotifyUser(string payload);
-        Task<string> GetUserByEmail(string email);
+        Task<SlackUserModel> GetUserByEmail(string email);
     }
 }

@@ -30,16 +30,17 @@ namespace EmailSendingFunctionApp.EventReminderEmails
                 var msgList = AssociateQueryServices.GetBirthdayWishesByAssociateId(bd.AssociateId);
                 msgList.ForEach(m =>
                 {
-                    msg += $"<div style=\"display:flex; flex: 1 1 auto;\"><h2>{m.Message}</h2><h3>By {m.SenderName}</h3></div>";
+                    msg += $"<span>{m.Message}</span><br/> <span>-{m.SenderName}</span><br/><br/>";
                 });
 
                 //Send Email Notification
                 await NotificationServices.SendEmail(new Models.BirthdayNotificationModel
                 {
-                    To = bd.AssociateEmail,
-                    From = "anjali.sharma@kiprosh.com",                    
+                    To = bd.AssociateEmail,                                      
                     Subject = $"Happy Birthday {bd.AssociateName}",
-                    Template = "BirthdayEmail.html"                    
+                    Template = AssociateQueryServices.GetValue("BirthdayTemplate"),
+                    Message = msg,
+                    AssociateName = bd.AssociateName                    
                 });
 
                 await NotificationServices.NotifyUser(bd.AssociateEmail, msgList);

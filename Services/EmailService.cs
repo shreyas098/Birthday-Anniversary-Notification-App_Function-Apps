@@ -8,18 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EmailSendingFunctionApp.Services
-{   
-    public class EmailService: IEmailService
+{
+    public class EmailService : IEmailService
     {
-        //private readonly string AccountKey;
-        public EmailService()
-        {            
+        private readonly string EmailApiKey;
+        public EmailService(string emailApiKey)
+        {
+            EmailApiKey = emailApiKey;
         }
         public async Task SendAsync(EmailRequest request)
         {
-           // if(IsReceiverKiproshEmail(request.To))
-            //{
-                var client = new SendGridClient("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");
+            if (IsReceiverKiproshEmail(request.To))
+            {
+                var client = new SendGridClient(EmailApiKey);
                 var from = new EmailAddress(request.From, "KiproshAdmin");
                 var subject = request.Subject;
                 var to = new EmailAddress(request.To);
@@ -28,12 +29,12 @@ namespace EmailSendingFunctionApp.Services
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
                 var response = await client.SendEmailAsync(msg);
-         //   }            
+            }
         }
 
-        private  bool IsReceiverKiproshEmail(string toEmail)
+        private bool IsReceiverKiproshEmail(string toEmail)
         {
-           return toEmail.EndsWith("@Kiprosh.com");
+            return toEmail.EndsWith("@kiprosh.com");
         }
     }
 }
