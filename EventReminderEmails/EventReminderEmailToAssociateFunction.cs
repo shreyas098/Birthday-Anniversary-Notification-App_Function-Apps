@@ -24,25 +24,28 @@ namespace EmailSendingFunctionApp.EventReminderEmails
         }
         public async Task InvokeAsync()
         {
-            var bdList = AssociateQueryServices.GetUpcomingAssociateBirthdays();
-            var associates = AssociateQueryServices.GetAssociateEmailList();
-            var subject = AssociateQueryServices.GetValue("BirthdayReminder_Subject");
-           
+            var allBDList = AssociateQueryServices.GetUpcomingAssociateBirthdays();           
+            if (allBDList != null && allBDList.Count > 0)
+            {
+                var associates = AssociateQueryServices.GetAssociateEmailList();
+                var subject = AssociateQueryServices.GetValue("BirthdayReminder_Subject");
                 foreach (var asc in associates)
                 {
-                    if (!bdList.Select(x=> x.AssociateId).ToList().Contains(asc.AssociateId))
+                    var bdList = allBDList.Where(x => x.AssociateId != asc.AssociateId).ToList();                    
+                    if (bdList!=null && bdList.Count > 0)
                     {
-                       var data = string.Join(", ",bdList.Select(x => x.AssociateName).ToList());
+                        var data = string.Join(", ", bdList.Select(x => x.AssociateName).ToList());
                         await NotificationServices.SendEmail(new Models.BirthdayReminderNotificationModel
                         {
-                            To = asc.AssociateEmail,                            
-                            Subject = $"{subject} ({DateTime.UtcNow.Date.ToShortDateString()})",
+                            To = asc.AssociateEmail,
+                            Subject = $"{subject} ({DateTime.UtcNow.AddDays(1).Date.ToShortDateString()})",
                             Template = AssociateQueryServices.GetValue("BirthdayReminderTemplate"),
                             Associates = data
                         });
                     }
-                }                          
-            await NotificationServices.NotifyOnSlackChannel(AssociateQueryServices.GetValue("BirthDayReminderMessage"));
+                }
+                await NotificationServices.NotifyOnSlackChannel(AssociateQueryServices.GetValue("BirthDayReminderMessage"));
+            }
         }
     }
 }

@@ -25,14 +25,20 @@ namespace EmailSendingFunctionApp.EventReminderEmails
         {
             var birthdayList = AssociateQueryServices.GetBirthdayPersonList();
             foreach(var bd in birthdayList)
-            {
-                var msg = "";
+            {               
                 var msgList = AssociateQueryServices.GetBirthdayWishesByAssociateId(bd.AssociateId);
-                msgList.ForEach(m =>
+                var msg = "";
+                if (msgList.Count > 0)
                 {
-                    msg += $"<span>{m.Message}</span><br/> <span>-{m.SenderName}</span><br/><br/>";
-                });
-                
+                    msg = "<h4>We have a surprise birthday wishes for you</h4> <br/>";
+                    msgList.ForEach(m =>
+                    {
+                        msg += $"<span>{m.Message}</span><br/> <span>-{m.SenderName}</span><br/><br/>";
+                    });
+                }
+                else {
+                    msg = "We Wish you a year Full of Minutes of Love and Happiness";
+                }
                 await NotificationServices.SendEmail(new Models.BirthdayNotificationModel
                 {
                     To = bd.AssociateEmail,                                      

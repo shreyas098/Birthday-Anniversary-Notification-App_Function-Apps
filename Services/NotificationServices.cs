@@ -29,7 +29,7 @@ namespace EmailSendingFunctionApp.Services
             await EmailService.SendAsync(new EmailRequest { 
                 To = request.To,
                 Body = content,
-                From = "anjali.sharma@kiprosh.com",
+                From = "imanpal@kiprosh.com",
                 Subject = request.Subject               
             });
         }
@@ -42,7 +42,7 @@ namespace EmailSendingFunctionApp.Services
             {
                 To = request.To,
                 Body = content,
-                From = "anjali.sharma@kiprosh.com",
+                From = "imanpal@kiprosh.com",
                 Subject = request.Subject,
             });
         }
